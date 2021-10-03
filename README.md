@@ -1,0 +1,1 @@
+# MinecraftServerInfo-Discord
