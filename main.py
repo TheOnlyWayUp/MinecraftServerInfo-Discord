@@ -1,6 +1,6 @@
-import discord, os, requests, dns.resolver, logging
+import discord, os, requests, logging
 from discord.ext import commands
-from mctools import *
+from mctools import PINGClient
 bot = commands.Bot(commands.when_mentioned_or("el!"))
 logging.basicConfig(filename='logger.log', level=logging.INFO)
 bot.remove_command("help")
@@ -21,15 +21,20 @@ async def ping(ctx, ip, port=25565):
         stats_embed.add_field(name="Max", value=f"{stats['players']['online']}/{stats['players']['max']}")
         stats_embed.add_field(name="Players", value="\n".join(f"`{player[0][:-4]}`" for player in stats['players']['sample']))
         stats_embed.add_field(name="Version", value=stats['version']['name'])
+        stats_embed.add_field(name="Info", value="[TheOnlyWayUp](https://twitch.tv/TheOnlyWayUp)  |  [Invite The bot](https://discord.com/oauth2/authorize?client_id=893908485891317800&scope=bot+applications.commands&permissions=274878000128)  \|  [View the Code](https://github.com/TheOnlyWayUp/MinecraftServerInfo-Discord)")
         await ctx.reply(embed=stats_embed, mention_author=False)
     except Exception as e:
+        stats_embed = discord.Embed(title="Error, couldn't retreive information.", description=f"Cause: {e}.", color=0xcc6666)
+        stats_embed.add_field(name="Info", value="[TheOnlyWayUp](https://twitch.tv/TheOnlyWayUp)  |  [Invite The bot](https://discord.com/oauth2/authorize?client_id=893908485891317800&scope=bot+applications.commands&permissions=274878000128)  \|  [View the Code](https://github.com/TheOnlyWayUp/MinecraftServerInfo-Discord)")
+        await ctx.reply(embed=stats_embed, mention_author=False)
+        await ctx.reply(embed=stats_embed, delete_after=5, mention_author=False)
         await ctx.message.delete()
 
 @bot.command()
 async def help(ctx):
     hembed = discord.Embed(title="Want help? You've come to the right place :D", description="Made by TheOnlyWayup#1231", color=0xbbcdff)
     hembed.add_field(name="ping", value="el!ping <put the ip here> [optional - put port here]", inline=False)
-    hembed.add_field(name="Info", value="**Creator** - TheOnlyWayUp  |  [Invite The bot](https://discord.com/oauth2/authorize?client_id=893908485891317800&scope=bot+applications.commands&permissions=274878000128)  \|  [View the Code](https://github.com/TheOnlyWayUp/MinecraftServerInfo-Discord)")
+    hembed.add_field(name="Info", value="[TheOnlyWayUp](https://twitch.tv/TheOnlyWayUp)  |  [Invite The bot](https://discord.com/oauth2/authorize?client_id=893908485891317800&scope=bot+applications.commands&permissions=274878000128)  \|  [View the Code](https://github.com/TheOnlyWayUp/MinecraftServerInfo-Discord)")
     await ctx.reply(embed=hembed, mention_author=False)
 
 @bot.event
